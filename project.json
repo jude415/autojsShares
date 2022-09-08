@@ -1,0 +1,14 @@
+{
+    "assets": [],
+    "build": {
+      "build_number": 0,
+      "build_time": 0
+    },
+    "useFeatures": [],
+    "main": "ui.js",
+    "name": "autojsShares",
+    "packageName": "com.dev.autojsShares",
+    "scripts": {},
+    "versionCode": 1,
+    "versionName": "1.0.0"
+}
