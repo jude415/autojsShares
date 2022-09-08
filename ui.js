@@ -5,17 +5,17 @@ var demo = require('demo.js');
 
 // 初始化配置
 const resources = context.getResources(), cf = resources.getConfiguration(), statusBarHeight = resources.getDimensionPixelSize(resources.getIdentifier('status_bar_height', 'dimen', 'android'))*2
-var settingsStorage = settings.settingsStorageFile();
-settings.initSettings(settingsStorage);
+var settingsStorage = settings.settingsStorageFile(); settings.initSettings(settingsStorage);
 var requestOrNot = false;
-var oldOptionsDict = settings.getSettingsDict(settingsStorage); var oldOptionsArr = settings.changeSettingsArr(oldOptionsDict);
-var newOptionsDict = settings.getSettingsDict(settingsStorage); var newOptionsArr = settings.changeSettingsArr(newOptionsDict);
+// 获取配置
+var options = settings.getSettings();
 
 // 初始化LOGO
 var windowLogo = 'data:image/png;base64,' + files.read("./pics/windowLogo.txt");
 
 // // 初始化DEBUG
-// newOptionsArr = settings.changeSettings(newOptionsArr, 'DEBUG', true); // 把这句话注释掉就可以记录每次选择的情况，下次再开就不用选了
+// options.DEBUG = true; // 把这句话注释掉就可以记录每次选择的情况，下次再开就不用选了
+
 
 
 // 启动贴边悬浮窗+完整悬浮窗
@@ -38,7 +38,7 @@ var 完整悬浮窗 = floaty.rawWindow(
         <vertical margin='10 0 10 0' weightSum='10'>
             <text h='50dp' id='text' textSize='20sp' gravity='center' textColor='white'>demo悬浮窗</text>
             <horizontal>
-                <Switch id='调试' text='调试模式' checked="{{newOptionsDict.DEBUG}}" padding='8 8 8 8' textSize='16sp' textColor='white'/>  
+                <Switch id='调试' text='调试模式' checked="{{options.DEBUG}}" padding='8 8 8 8' textSize='16sp' textColor='white'/>  
                 <text h='30dp' margin='10 -10 10 10' textSize='12sp' gravity='left' textColor='white'>*每次加载和点击都会弹出坐标，会影响准确率，慎选</text>
             </horizontal>
             <horizontal>
@@ -57,11 +57,13 @@ var 完整悬浮窗 = floaty.rawWindow(
 完整悬浮窗.setPosition(-3000, -3000);
 
 边缘悬浮窗.windowLogo.setOnTouchListener(function (view, event) {
-    var dw = newOptionsDict.dw, dh = newOptionsDict.dh;
+    var dw = options.screenOptions.dw, dh = options.screenOptions.dh;
     switch (event.getAction()) {
         case event.ACTION_DOWN:
             X = event.getRawX();
             Y = event.getRawY();
+            x = event.getRawX() - X;
+            y = event.getRawY() - Y;
             downTime = new Date().getTime();
             边缘悬浮窗.移动框架.alpha = 1;
             return true;
@@ -151,11 +153,13 @@ var 完整悬浮窗 = floaty.rawWindow(
 
 // 可移动
 完整悬浮窗.移动框架.setOnTouchListener(function(view, event) {
-    var dw = newOptionsDict.dw, dh = newOptionsDict.dh;
+    var dw = options.screenOptions.dw, dh = options.screenOptions.dh;
     switch (event.getAction()) {
         case event.ACTION_DOWN:
             X = event.getRawX();
             Y = event.getRawY();
+            x = event.getRawX() - X;
+            y = event.getRawY() - Y;
             return true;
         case event.ACTION_MOVE:
             x = event.getRawX() - X;
@@ -199,26 +203,21 @@ getScreenDirection()
 
 // 屏幕旋转监听及处理
 function getScreenDirection() {
-    newOptionsDict = settings.changeSettingsDict(newOptionsArr); 
-    var DEBUG = newOptionsDict.DEBUG;
-    var phone, dw, dh;
+    var DEBUG = options.DEBUG;
+    var dw, dh;
+    // 需竖屏识别
+    var phone = false;
+    // // 需横屏识别
+    // var phone = true;
     var orientated = cf.orientation
     console.log(orientated)
 
     if (orientated == cf.ORIENTATION_PORTRAIT) { // 竖屏
         if (device.width < device.height) {
             if (DEBUG) console.log('手机：竖屏');
-            // 竖屏识别 
-            phone = false;
-            // // 横屏识别
-            // phone = true;
             dw = device.width, dh = device.height;
         } else {
             if (DEBUG) console.log('手机：竖屏');
-            // 竖屏识别 
-            phone = false;
-            // // 横屏识别
-            // phone = true;
             dw = device.height, dh = device.width;
         }
         
@@ -235,17 +234,10 @@ function getScreenDirection() {
     } else if (orientated == cf.ORIENTATION_LANDSCAPE) { // 横屏
         if (device.width > device.height) {
             if (DEBUG) console.log('模拟器：平板模式/手机模式强制横屏');
-            // 竖屏识别
-            phone = true;
-            // // 横屏识别
-            // phone = false;
+            phone = !phone;
             dw = device.width, dh = device.height;
         } else {
             if (DEBUG) console.log('手机：横屏');
-            // 竖屏识别 
-            phone = false;
-            // // 横屏识别
-            // phone = true;
             dw = device.height, dh = device.width;
         }
 
@@ -277,9 +269,7 @@ function getScreenDirection() {
             wanzheng_x = 完整悬浮窗.getX(); wanzheng_y = 完整悬浮窗.getY();
         }
     }
-    newOptionsArr = settings.changeScreenSettings(newOptionsArr, phone, dw, dh);
-    newOptionsDict = settings.changeSettingsDict(newOptionsArr); 
-
+    settings.changeScreenSettings(options, phone, dw, dh);
     if (DEBUG) console.log('phone:'+phone+',dw:'+dw+',dh:'+dh)
 }
 
@@ -308,9 +298,8 @@ events.on('exit', function () {
 
 完整悬浮窗.调试.on('check', function(checked) {
     // 用户勾选是否调试模式
-    newOptionsArr = settings.changeSettings(newOptionsArr, 'DEBUG', checked);
-    newOptionsDict = settings.changeSettingsDict(newOptionsArr); 
-    var DEBUG = newOptionsDict.DEBUG;
+    options.DEBUG = checked; settings.changeSetting(options);
+    var DEBUG = options.DEBUG;
     if (DEBUG) console.log('DEBUG:' + DEBUG)
 });
 
@@ -319,15 +308,13 @@ var testThread;
 // 集成功能
 // demo
 完整悬浮窗.开始demo.on('click', function() {
-    // 更改配置
-    settings.changeAllDifferentSettings(oldOptionsArr, newOptionsArr, settingsStorage)
     // 开启线程
     testThread = threads.start(function () {
         toastLog('开始demo')
         // 请求截图（如果已请求过则不再请求）
-        requestOrNot = globalFunctions.requestSC(requestOrNot, newOptionsDict);
+        requestOrNot = globalFunctions.requestSC(requestOrNot, options);
         // demo
-        demo.test(newOptionsDict);
+        demo.test(options);
     });
 });
 

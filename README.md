@@ -34,11 +34,11 @@
 
 2. 安装软件后，开启应用的**无障碍**和**悬浮窗**功能。
 
-   ![无障碍和悬浮窗.png](https://gitee.com/judeHome/autoAobi/raw/main/README/Step2.png)
+   ![无障碍和悬浮窗.png](https://gitee.com/judeHome/autojsShares/raw/main/README/Step2.png)
 
 3. 进入设置，选择 **脚本运行 > 音量上键停止所有脚本**。
 
-   ![音量上键停止所有脚本.png](https://gitee.com/judeHome/autoAobi/raw/main/README/Step3.png)
+   ![音量上键停止所有脚本.png](https://gitee.com/judeHome/autojsShares/raw/main/README/Step3.png)
 
 4. 自行调试
 
@@ -50,11 +50,11 @@
 
 （1）打开 VS Code，安装`Auto.js-VSCodeExt`插件。
 
-![VS Code插件.png](https://gitee.com/judeHome/autoAobi/raw/main/README/Step6(1).png)
+![VS Code插件.png](https://gitee.com/judeHome/autojsShares/raw/main/README/Step4(1).png)
 
 （2）`Command+shift+P`快捷键打开 `Command Palette`，运行 `Auto.js:New Project`命令创建一个新项目。
 
-![创建新项目.png](https://gitee.com/judeHome/autoAobi/raw/main/README/Step6(2).png)
+![创建新项目.png](https://gitee.com/judeHome/autojsShares/raw/main/README/Step4(2).png)
 
 （3）自行编写、修改.js脚本，可参考已提供的.js文件。
 
@@ -72,7 +72,7 @@
 
 3. `Auto.js`记得锁定，防止因为充电等手机原因被后台进程误杀，一定要一直处于使用界面，否则截图获取不到游戏内容。
 
-   ![锁定autojs.png](https://gitee.com/judeHome/autoAobi/raw/main/README/Warning(3).png)
+   ![锁定autojs.png](https://gitee.com/judeHome/autojsShares/raw/main/README/Warning(3).png)
 
 4. 如果以上图片全挂了，可以访问我的Gitee（与Github同步）：
 

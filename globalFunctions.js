@@ -4,7 +4,7 @@ var globalFunctions = {};
 // 申请截图
 globalFunctions.requestSC = function(requestOrNot, options) {
     if (!requestOrNot) {
-      var phone = options.phone;
+      var phone = options.screenOptions.phone;
       // 设置点击环境的分辨率
       setScreenMetrics(device.width, device.height);
       // 请求截图
@@ -15,7 +15,7 @@ globalFunctions.requestSC = function(requestOrNot, options) {
 
 // 图片匹配，返回点击坐标
 globalFunctions.match = function(templatePath, x_left, y_left, x_width, y_height, ac, options) {
-    var path = options.path, phone = options.phone, DEBUG = options.DEBUG; var resize_x = options.resize_x, resize_y = options.resize_y;
+    var path = options.path, phone = options.screenOptions.phone, DEBUG = options.DEBUG; var resize_x = options.screenOptions.resize_x, resize_y = options.screenOptions.resize_y;
     
     var img = captureScreen(); var img_gray = images.cvtColor(img, 'BGR2GRAY');
     // // base64读取成图片
@@ -70,7 +70,7 @@ globalFunctions.findColor = function(color, x_left, y_left, x_width, y_height, a
 
 // 点击位置并输出日志，可调整点击位置
 globalFunctions.resizeClick = function(resize, x, y, options){
-    var DEBUG = options.DEBUG; var resize_x = options.resize_x, resize_y = options.resize_y;
+    var DEBUG = options.DEBUG; var resize_x = options.screenOptions.resize_x, resize_y = options.screenOptions.resize_y;
     
     if (resize) {
       x = x*resize_x; y = y*resize_y;
