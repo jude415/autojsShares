@@ -70,14 +70,14 @@
 
 2. 放图片的路径中尽量不要有中文，有中文大概率会报错。
 
-3. `Auto.js`记得锁定，防止因为充电等手机原因被后台进程误杀，一定要一直处于游戏界面，否则截图获取不到游戏内容。
+3. `Auto.js`记得锁定，防止因为充电等手机原因被后台进程误杀，一定要一直处于使用界面，否则截图获取不到游戏内容。
 
    ![锁定autojs.png](https://gitee.com/judeHome/autoAobi/raw/main/README/Warning(3).png)
 
 4. 如果以上图片全挂了，可以访问我的Gitee（与Github同步）：
 
 ```js
-https://gitee.com/judeHome/
+https://gitee.com/judeHome/autojsShares
 ```
 
 5. 执行时不要直接`Ctrl+F5`，会报`Moudle not Found`的错误，需要`Save Project`到手机本地后，在手机本地运行调试。
